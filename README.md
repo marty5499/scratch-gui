@@ -1,3 +1,21 @@
+关于Scratch 3.0 架构
+之前2.0 是运行的flash之上的，3.0 是基于React + Redux做的，所以想要二次开发需要相关经验；
+
+3.0 所有的代码都开源在了 Github上，之前一直是开发版本，19年初算是正式发布了，相对来说也稳定了很多；
+
+然后积木那块核心用的是Google的Blockly项目，这个项目本身是开源了，主要是做可视化代码编程（积木代码） 地址：https://developers.google.cn/blockly/ 很多做类似编程的公司，都在基于Blockly来做，国内的编程猫也是的，国外的Codecombat，CodeMonkey貌似都是；
+
+新版的Scratch把代码基于不同项目业务做了拆分，包括国际化、VM、Sound、Canvas这部分的项目都拆了出来
+
+scratch-gui 这是Scratch的展示层项目，主要由React构建
+scratch-vm 这是Core项目，主要是一些底层处理
+scratch-audio 这个主要是处理音频
+scratch-blocks 基于Google Blockly开发的Scratch积木块
+scratch-l10n 国际化的
+scratch-svg-renderer PNG转SVG、SVG编辑等等 ... 还有其他的，具体可以到 Scratch的Git主页去看 https://github.com/LLK
+
+
+
 # scratch-gui
 
 Scratch GUI is a set of React components that comprise the interface for creating and running Scratch 3.0 projects
