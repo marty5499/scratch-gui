@@ -90,16 +90,11 @@ const Backpack = ({
                         id="gui.backpack.header.conditions"
                     />
                 ) : (
-                    <ComingSoonTooltip
-                        place="top"
-                        tooltipId="backpack-tooltip"
-                    >
-                        <FormattedMessage
-                            defaultMessage="過關條件"
-                            description="Button to open the backpack tooltip"
-                            id="gui.backpack.header.tooltip"
-                        />
-                    </ComingSoonTooltip>
+                    <FormattedMessage
+                        defaultMessage="過關條件"
+                        description="Button to open the backpack tooltip"
+                        id="gui.backpack.header.tooltip"
+                    />
                 )}
             </div>
             
