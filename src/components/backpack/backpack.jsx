@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import DragConstants from '../../lib/drag-constants';
-import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
+//import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
 import SpriteSelectorItem from '../../containers/sprite-selector-item.jsx';
 import styles from './backpack.css';
 
@@ -107,7 +107,16 @@ const Backpack = ({
                     className={styles.closeButton}
                     onClick={handleClosePanel}
                 >
-                    <span>×</span>
+                    <span>離開</span>
+                </button>
+                
+                <button
+                    className={styles.submitButton}
+                    onClick={() => {
+                        console.log('提交');
+                    }}
+                >
+                    送出
                 </button>
             </div>
             
