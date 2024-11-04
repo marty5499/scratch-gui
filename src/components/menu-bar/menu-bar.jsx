@@ -735,7 +735,10 @@ class MenuBar extends React.Component {
                             id="gui.menuBar.validate"
                         />
                     </div>
-                    <div className={styles.menuBarItem}>
+                    <div 
+                        className={styles.menuBarItem}
+                        onMouseEnter={() => alert('hello')}
+                    >
                         {this.props.canSave && (
                             <SaveStatus />
                         )}

@@ -99,3 +99,43 @@
     margin: 0.5rem;
     cursor: pointer;
 }
+
+.slidePanel {
+    position: fixed;
+    bottom: -320px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 320px;
+    background-image: url('./stage_start.png');
+    background-size: 800px 320px;
+    background-repeat: no-repeat;
+    transition: bottom 0.5s ease-in-out;
+    z-index: 1000;
+}
+
+.slidePanelVisible {
+    bottom: 0;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.closeButton:hover {
+    background: rgba(0, 0, 0, 0.7);
+}

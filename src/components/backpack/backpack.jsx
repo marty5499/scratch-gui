@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
@@ -55,103 +55,138 @@ const Backpack = ({
     onMouseEnter,
     onMouseLeave,
     onMore
-}) => (
-    <div className={styles.backpackContainer}>
-        <div
-            className={styles.backpackHeader}
-            onClick={onToggle}
-        >
-            {onToggle ? (
-                <FormattedMessage
-                    defaultMessage="Backpack"
-                    description="Button to open the backpack"
-                    id="gui.backpack.header"
-                />
-            ) : (
-                <ComingSoonTooltip
-                    place="top"
-                    tooltipId="backpack-tooltip"
-                >
+}) => {
+    const [isPanelVisible, setIsPanelVisible] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+    
+    const handleMouseEnter = () => {
+        if (!isPanelVisible && !isAnimating) {
+            setIsAnimating(true);
+            setIsPanelVisible(true);
+            // 动画完成后重置动画状态
+            setTimeout(() => {
+                setIsAnimating(false);
+            }, 500); // 与 CSS transition 时间相匹配
+        }
+    };
+    
+    const handleClosePanel = () => {
+        setIsPanelVisible(false);
+    };
+
+    return (
+        <div className={styles.backpackContainer}>
+            <div
+                className={styles.backpackHeader}
+                onClick={onToggle}
+                onMouseEnter={handleMouseEnter}
+            >
+                {onToggle ? (
                     <FormattedMessage
                         defaultMessage="Backpack"
                         description="Button to open the backpack"
                         id="gui.backpack.header"
                     />
-                </ComingSoonTooltip>
-            )}
-        </div>
-        {expanded ? (
-            <div
-                className={classNames(styles.backpackList, {
-                    [styles.dragOver]: dragOver || blockDragOver
-                })}
-                ref={containerRef}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-            >
-                {error ? (
-                    <div className={styles.statusMessage}>
-                        <FormattedMessage
-                            defaultMessage="Error loading backpack"
-                            description="Error backpack message"
-                            id="gui.backpack.errorBackpack"
-                        />
-                    </div>
                 ) : (
-                    loading ? (
+                    <ComingSoonTooltip
+                        place="top"
+                        tooltipId="backpack-tooltip"
+                    >
+                        <FormattedMessage
+                            defaultMessage="Backpack"
+                            description="Button to open the backpack"
+                            id="gui.backpack.header"
+                        />
+                    </ComingSoonTooltip>
+                )}
+            </div>
+            
+            <div 
+                className={classNames(styles.slidePanel, {
+                    [styles.slidePanelVisible]: isPanelVisible
+                })}
+            >
+                <button
+                    className={styles.closeButton}
+                    onClick={handleClosePanel}
+                >
+                    ×
+                </button>
+            </div>
+            
+            {expanded ? (
+                <div
+                    className={classNames(styles.backpackList, {
+                        [styles.dragOver]: dragOver || blockDragOver
+                    })}
+                    ref={containerRef}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                >
+                    {error ? (
                         <div className={styles.statusMessage}>
                             <FormattedMessage
-                                defaultMessage="Loading..."
-                                description="Loading backpack message"
-                                id="gui.backpack.loadingBackpack"
+                                defaultMessage="Error loading backpack"
+                                description="Error backpack message"
+                                id="gui.backpack.errorBackpack"
                             />
                         </div>
                     ) : (
-                        contents.length > 0 ? (
-                            <div className={styles.backpackListInner}>
-                                {contents.map(item => (
-                                    <SpriteSelectorItem
-                                        className={styles.backpackItem}
-                                        costumeURL={item.thumbnailUrl}
-                                        details={item.name}
-                                        dragPayload={item}
-                                        dragType={dragTypeMap[item.type]}
-                                        id={item.id}
-                                        key={item.id}
-                                        name={intl.formatMessage(labelMap[item.type])}
-                                        selected={false}
-                                        onClick={noop}
-                                        onDeleteButtonClick={onDelete}
-                                    />
-                                ))}
-                                {showMore && (
-                                    <button
-                                        className={styles.more}
-                                        onClick={onMore}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="More"
-                                            description="Load more from backpack"
-                                            id="gui.backpack.more"
-                                        />
-                                    </button>
-                                )}
-                            </div>
-                        ) : (
+                        loading ? (
                             <div className={styles.statusMessage}>
                                 <FormattedMessage
-                                    defaultMessage="Backpack is empty"
-                                    description="Empty backpack message"
-                                    id="gui.backpack.emptyBackpack"
+                                    defaultMessage="Loading..."
+                                    description="Loading backpack message"
+                                    id="gui.backpack.loadingBackpack"
                                 />
                             </div>
+                        ) : (
+                            contents.length > 0 ? (
+                                <div className={styles.backpackListInner}>
+                                    {contents.map(item => (
+                                        <SpriteSelectorItem
+                                            className={styles.backpackItem}
+                                            costumeURL={item.thumbnailUrl}
+                                            details={item.name}
+                                            dragPayload={item}
+                                            dragType={dragTypeMap[item.type]}
+                                            id={item.id}
+                                            key={item.id}
+                                            name={intl.formatMessage(labelMap[item.type])}
+                                            selected={false}
+                                            onClick={noop}
+                                            onDeleteButtonClick={onDelete}
+                                        />
+                                    ))}
+                                    {showMore && (
+                                        <button
+                                            className={styles.more}
+                                            onClick={onMore}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="More"
+                                                description="Load more from backpack"
+                                                id="gui.backpack.more"
+                                            />
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className={styles.statusMessage}>
+                                    <FormattedMessage
+                                        defaultMessage="Backpack is empty"
+                                        description="Empty backpack message"
+                                        id="gui.backpack.emptyBackpack"
+                                    />
+                                </div>
+                            )
                         )
-                    )
-                )}
-            </div>
-        ) : null}
-    </div>
-);
+                    )}
+                </div>
+            ) : null}
+        </div>
+    );
+};
 
 Backpack.propTypes = {
     blockDragOver: PropTypes.bool,
