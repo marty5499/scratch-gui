@@ -85,9 +85,9 @@ const Backpack = ({
             >
                 {onToggle ? (
                     <FormattedMessage
-                        defaultMessage="Backpack"
+                        defaultMessage="過關條件"
                         description="Button to open the backpack"
-                        id="gui.backpack.header"
+                        id="gui.backpack.header.conditions"
                     />
                 ) : (
                     <ComingSoonTooltip
@@ -95,9 +95,9 @@ const Backpack = ({
                         tooltipId="backpack-tooltip"
                     >
                         <FormattedMessage
-                            defaultMessage="Backpack"
-                            description="Button to open the backpack"
-                            id="gui.backpack.header"
+                            defaultMessage="過關條件"
+                            description="Button to open the backpack tooltip"
+                            id="gui.backpack.header.tooltip"
                         />
                     </ComingSoonTooltip>
                 )}
