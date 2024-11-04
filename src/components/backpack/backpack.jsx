@@ -59,14 +59,14 @@ const Backpack = ({
     const [isPanelVisible, setIsPanelVisible] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     
-    const handleMouseEnter = () => {
+    const handleClick = e => {
+        e.preventDefault(); // 防止事件冒泡
         if (!isPanelVisible && !isAnimating) {
             setIsAnimating(true);
             setIsPanelVisible(true);
-            // 动画完成后重置动画状态
             setTimeout(() => {
                 setIsAnimating(false);
-            }, 500); // 与 CSS transition 时间相匹配
+            }, 500);
         }
     };
     
@@ -78,8 +78,10 @@ const Backpack = ({
         <div className={styles.backpackContainer}>
             <div
                 className={styles.backpackHeader}
-                onClick={onToggle}
-                onMouseEnter={handleMouseEnter}
+                onClick={e => {
+                    handleClick(e);
+                    if (onToggle) onToggle();
+                }}
             >
                 {onToggle ? (
                     <FormattedMessage
@@ -110,7 +112,7 @@ const Backpack = ({
                     className={styles.closeButton}
                     onClick={handleClosePanel}
                 >
-                    ×
+                    <span>×</span>
                 </button>
             </div>
             

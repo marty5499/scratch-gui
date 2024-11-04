@@ -105,10 +105,10 @@
     bottom: -320px;
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
+    width: 1024px;
     height: 320px;
     background-image: url('./stage_start.png');
-    background-size: 800px 320px;
+    background-size: 1024px 320px;
     background-repeat: no-repeat;
     transition: bottom 0.5s ease-in-out;
     z-index: 1000;
