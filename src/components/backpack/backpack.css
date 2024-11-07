@@ -99,3 +99,70 @@
     margin: 0.5rem;
     cursor: pointer;
 }
+
+.slidePanel {
+    position: fixed;
+    bottom: -320px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1024px;
+    height: 280px;
+    background-image: url('./stage_start.png');
+    background-size: 1024px 280px;
+    background-repeat: no-repeat;
+    transition: bottom 0.5s ease-in-out;
+    z-index: 1000;
+}
+
+.slidePanelVisible {
+    bottom: 0;
+}
+
+
+.submitButton {
+    position: absolute;
+    top: 79%;
+    transform: translateY(-50%);
+    left: 79%;
+    width: 7%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #3f7842;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3em;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submitButton:hover {
+    background-color: #4CAF50;
+}
+
+
+
+.closeButton {
+    position: absolute;
+    top: 79%;
+    transform: translateY(-50%);
+    left: 90%;
+    width: 7%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #783f3f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3em;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton:hover {
+    background-color: #ff6363;
+}

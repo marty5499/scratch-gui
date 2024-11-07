@@ -93,6 +93,8 @@ import oldtimeyLogo from './oldtimey-logo.svg';
 
 import sharedMessages from '../../lib/shared-messages';
 
+import {Runner} from '../../extends/Runner';
+
 const ariaMessages = defineMessages({
     tutorials: {
         id: 'gui.menuBar.tutorialsLibrary',
@@ -182,7 +184,8 @@ class MenuBar extends React.Component {
             'handleKeyPress',
             'handleRestoreOption',
             'getSaveToComputerHandler',
-            'restoreOptionMessage'
+            'restoreOptionMessage',
+            'handleValidateClick'
         ]);
     }
     componentDidMount () {
@@ -371,6 +374,26 @@ class MenuBar extends React.Component {
             this.props.onRequestCloseAbout();
         };
     }
+    handleValidateClick () {
+        alert('Go');
+        const workspace = window.Blockly.getMainWorkspace();
+            const run = new Runner(workspace);
+          
+        (async () => {
+            try {
+                console.log('開始拖動第一個積木 (重複積木)');
+                const block1 = await run.drag('control_repeat', 0.5, 400, 150);
+                console.log('第一個積木拖動完成:', block1);
+              window.block1 = block1;
+                
+                console.log('開始拖動第二個積木 (移動積木)');
+                const block2 = await run.drag('motion_movesteps', 1.5, block1, 35);
+                console.log('第二個積木拖動完成:', block2);
+            } catch (error) {
+                console.error('執行過程發生錯誤:', error);
+            }
+          })();
+    }
     render () {
         const saveNowMessage = (
             <FormattedMessage
@@ -425,14 +448,10 @@ class MenuBar extends React.Component {
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
-                            <img
-                                id="logo_img"
-                                alt="Scratch"
+                            <div
                                 className={classNames(styles.scratchLogo, {
                                     [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
                                 })}
-                                draggable={false}
-                                src={this.props.logo}
                                 onClick={this.props.onClickLogo}
                             />
                         </div>
@@ -564,7 +583,6 @@ class MenuBar extends React.Component {
                                     )}</TurboMode>
                                 </MenuSection>
                             </MenuBarMenu>
-
                         </div>
                         {this.props.isTotallyNormal && (
                             <div
@@ -707,7 +725,20 @@ class MenuBar extends React.Component {
                 {/* show the proper UI in the account menu, given whether the user is
                 logged in, and whether a session is available to log in with */}
                 <div className={styles.accountInfoGroup}>
-                    <div className={styles.menuBarItem}>
+                    <div
+                        className={classNames(styles.menuBarItem, styles.validateButton)}
+                        onClick={this.handleValidateClick}
+                    >
+                        <FormattedMessage
+                            defaultMessage="驗證"
+                            description="Validation button"
+                            id="gui.menuBar.validate"
+                        />
+                    </div>
+                    <div 
+                        className={styles.menuBarItem}
+                        onMouseEnter={() => alert('hello')}
+                    >
                         {this.props.canSave && (
                             <SaveStatus />
                         )}
