@@ -29,6 +29,9 @@ const baseConfig = new ScratchWebpackConfigBuilder({
         },
         devServer: {
             allowedHosts: ["scratch.nodered.vip"],
+            static: {
+                directory: path.join(__dirname, 'static')
+            }
         },
         resolve: {
             fallback: {

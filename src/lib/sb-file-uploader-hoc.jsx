@@ -103,7 +103,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                 // replace it. (If they don't own the project and haven't
                 // changed it, no need to confirm.)
                 let uploadAllowed = true;
-                if (userOwnsProject || (projectChanged && isShowingWithoutId)) {
+                if (userOwnsProject || projectChanged) {
                     uploadAllowed = confirm( // eslint-disable-line no-alert
                         intl.formatMessage(sharedMessages.replaceProjectWarning)
                     );
@@ -124,12 +124,10 @@ const SBFileUploaderHOC = function (WrappedComponent) {
         // that project data has finished "uploading" into the browser
         handleFinishedLoadingUpload () {
             if (this.fileToUpload && this.fileReader) {
-                // begin to read data from the file. When finished,
-                // cues step 6 using the reader's onload callback
+                // 開始讀取檔案內容
                 this.fileReader.readAsArrayBuffer(this.fileToUpload);
             } else {
                 this.props.cancelFileUpload(this.props.loadingState);
-                // skip ahead to step 7
                 this.removeFileObjects();
             }
         }
@@ -148,23 +146,21 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             if (this.fileReader) {
                 this.props.onLoadingStarted();
                 const filename = this.fileToUpload && this.fileToUpload.name;
-                let loadingSuccess = false;
+                
+                // 載入專案
                 this.props.vm.loadProject(this.fileReader.result)
                     .then(() => {
+                        // 設定專案標題
                         if (filename) {
                             const uploadedProjectTitle = this.getProjectTitleFromFilename(filename);
                             this.props.onSetProjectTitle(uploadedProjectTitle);
                         }
-                        loadingSuccess = true;
                     })
                     .catch(error => {
-                        log.warn(error);
-                        alert(this.props.intl.formatMessage(messages.loadError)); // eslint-disable-line no-alert
+                        alert(this.props.intl.formatMessage(messages.loadError));
                     })
                     .then(() => {
-                        this.props.onLoadingFinished(this.props.loadingState, loadingSuccess);
-                        // go back to step 7: whether project loading succeeded
-                        // or failed, reset file objects
+                        this.props.onLoadingFinished(this.props.loadingState);
                         this.removeFileObjects();
                     });
             }

@@ -171,11 +171,14 @@ class MenuBar extends React.Component {
             'handleRestoreOption',
             'getSaveToComputerHandler',
             'restoreOptionMessage',
-            'handleValidateClick'
+            'handleValidateClick',
+            'loadStageFromUrl'
         ]);
     }
     componentDidMount () {
         document.addEventListener('keydown', this.handleKeyPress);
+        
+        this.loadStageFromUrl();
     }
     componentWillUnmount () {
         document.removeEventListener('keydown', this.handleKeyPress);
@@ -371,13 +374,42 @@ class MenuBar extends React.Component {
                 console.log('第一個積木拖動完成:', block1);
               window.block1 = block1;
                 
-                console.log('開始拖動第二個積木 (移動積木)');
+                console.log('開始拖動第二個木 (移動積木)');
                 const block2 = await run.drag('motion_movesteps', 1.5, block1, 35);
                 console.log('第二個積木拖動完成:', block2);
             } catch (error) {
                 console.error('執行過程發生錯誤:', error);
             }
           })();
+    }
+    loadStageFromUrl () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const stageId = urlParams.get('stage');
+        
+        if (stageId) {
+            const stageUrl = `/static/stage/${stageId}.sb3`;
+            
+            fetch(stageUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Stage file not found');
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(buffer => {
+                    // 載入專案到 VM
+                    this.props.vm.loadProject(buffer)
+                        .then(() => {
+                            console.log('Stage loaded successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error loading stage:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Error fetching stage file:', error);
+                });
+        }
     }
     render () {
         const saveNowMessage = (
