@@ -100,15 +100,17 @@
     cursor: pointer;
 }
 
+
+/* 過關條件說明 */
 .slidePanel {
     position: fixed;
     bottom: -320px;
     left: 50%;
     transform: translateX(-50%);
-    width: 1024px;
-    height: 280px;
+    width: 50%;
+    height: 30%;
     background-image: url('./stage_start.png');
-    background-size: 1024px 280px;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     transition: bottom 0.5s ease-in-out;
     z-index: 1000;
