@@ -387,8 +387,22 @@ class MenuBar extends React.Component {
         const stageId = urlParams.get('stage');
         
         if (stageId) {
+            // Load both .sb3 and .js files
             const stageUrl = `/static/stage/${stageId}.sb3`;
+            const stageInfoUrl = `/static/stage/${stageId}.js`;
             
+            // Load the stage info (.js file)
+            import(/* webpackIgnore: true */ stageInfoUrl)
+                .then(module => {
+                    // Store stageInfo in window object
+                    window.stageInfo = module.default;
+                    console.log('Stage info loaded successfully:', window.stageInfo);
+                })
+                .catch(error => {
+                    console.error('Error loading stage info:', error);
+                });
+
+            // Load the .sb3 file
             fetch(stageUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -397,7 +411,6 @@ class MenuBar extends React.Component {
                     return response.arrayBuffer();
                 })
                 .then(buffer => {
-                    // 載入專案到 VM
                     this.props.vm.loadProject(buffer)
                         .then(() => {
                             console.log('Stage loaded successfully');
