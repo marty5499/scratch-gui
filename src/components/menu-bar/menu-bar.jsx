@@ -389,7 +389,7 @@ class MenuBar extends React.Component {
         if (stageId) {
             // Load both .sb3 and .js files
             const stageUrl = `/static/stage/${stageId}.sb3`;
-            const stageInfoUrl = `/static/stage/${stageId}.js`;
+            const stageInfoUrl = `/static/stage/${stageId}_info.js`;
             
             // Load the stage info (.js file)
             import(/* webpackIgnore: true */ stageInfoUrl)

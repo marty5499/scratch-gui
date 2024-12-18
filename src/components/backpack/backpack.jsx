@@ -101,6 +101,10 @@ const Backpack = ({
                 const formData = new FormData();
                 const blob = new Blob([content], {type: 'application/x.scratch.sb3'});
                 formData.append('file', blob, 'project.sb3');
+                
+                if (window.stageInfo) {
+                    formData.append('stageInfo', JSON.stringify(window.stageInfo));
+                }
 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/judge/action', true);
