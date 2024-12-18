@@ -18,7 +18,9 @@ import {connect} from 'react-redux';
 import storage from '../lib/storage';
 import VM from 'scratch-vm';
 
+// eslint-disable-next-line no-unused-vars
 const dragTypes = [DragConstants.COSTUME, DragConstants.SOUND, DragConstants.SPRITE];
+// eslint-disable-next-line no-unused-vars
 const DroppableBackpack = DropAreaHOC(dragTypes)(BackpackComponent);
 
 class Backpack extends React.Component {
@@ -217,7 +219,7 @@ class Backpack extends React.Component {
     }
     render () {
         return (
-            <DroppableBackpack
+            <BackpackComponent
                 blockDragOver={this.state.blockDragOverBackpack}
                 contents={this.state.contents}
                 error={this.state.error}
@@ -230,6 +232,7 @@ class Backpack extends React.Component {
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 onToggle={this.props.host ? this.handleToggle : null}
+                vm={this.props.vm}
             />
         );
     }
@@ -239,9 +242,10 @@ Backpack.propTypes = {
     host: PropTypes.string,
     token: PropTypes.string,
     username: PropTypes.string,
-    vm: PropTypes.instanceOf(VM)
+    vm: PropTypes.instanceOf(VM).isRequired
 };
 
+// eslint-disable-next-line no-unused-vars
 const getTokenAndUsername = state => {
     // Look for the session state provided by scratch-www
     if (state.session && state.session.session && state.session.session.user) {
@@ -260,14 +264,15 @@ const getTokenAndUsername = state => {
     };
 };
 
-const mapStateToProps = state => Object.assign(
-    {
+const mapStateToProps = state => {
+    const {vm} = state.scratchGui;
+    return {
         dragInfo: state.scratchGui.assetDrag,
-        vm: state.scratchGui.vm,
-        blockDrag: state.scratchGui.blockDrag
-    },
-    getTokenAndUsername(state)
-);
+        vm,
+        blockDrag: state.scratchGui.blockDrag,
+        ...getTokenAndUsername(state)
+    };
+};
 
 const mapDispatchToProps = () => ({});
 

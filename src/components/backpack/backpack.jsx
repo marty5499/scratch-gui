@@ -45,7 +45,7 @@ const Backpack = ({
     containerRef,
     contents,
     dragOver,
-    error,
+    error: propsError,
     expanded,
     intl,
     loading,
@@ -54,13 +54,15 @@ const Backpack = ({
     onDelete,
     onMouseEnter,
     onMouseLeave,
-    onMore
+    onMore,
+    vm
 }) => {
     const [isPanelVisible, setIsPanelVisible] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
     
-    const handleClick = e => {
-        e.preventDefault(); // 防止事件冒泡
+    const handleClick = () => {
         if (!isPanelVisible && !isAnimating) {
             setIsAnimating(true);
             setIsPanelVisible(true);
@@ -74,14 +76,76 @@ const Backpack = ({
         setIsPanelVisible(false);
     };
 
+    const handleHeaderClick = e => {
+        e.preventDefault();
+        handleClick();
+        if (onToggle) onToggle();
+    };
+
+    const showMessage = message => {
+        // eslint-disable-next-line no-alert
+        alert(message);
+    };
+
+    const handleSubmit = () => {
+        if (!vm) {
+            showMessage('無法存取專案資料');
+            return;
+        }
+
+        setIsUploading(true);
+        setUploadProgress(0);
+
+        vm.saveProjectSb3()
+            .then(content => {
+                const formData = new FormData();
+                const blob = new Blob([content], {type: 'application/x.scratch.sb3'});
+                formData.append('file', blob, 'project.sb3');
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/judge/action', true);
+                xhr.responseType = 'json';
+
+                xhr.upload.onprogress = event => {
+                    if (event.lengthComputable) {
+                        const progress = (event.loaded / event.total) * 100;
+                        setUploadProgress(Math.round(progress));
+                    }
+                };
+
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        setIsUploading(false);
+                        const response = xhr.response;
+                        showMessage(JSON.stringify(response, null, 2));
+                        handleClosePanel();
+                    } else {
+                        setIsUploading(false);
+                        showMessage('上傳失敗，請重試');
+                    }
+                };
+
+                xhr.onerror = () => {
+                    setIsUploading(false);
+                    showMessage('上傳失敗，請檢查網路連線');
+                };
+
+                xhr.send(formData);
+            })
+            .catch(err => {
+                setIsUploading(false);
+                showMessage('儲存專案時發生錯誤');
+                console.error(err);
+            });
+    };
+
+    const handleButtonClick = handler => () => handler();
+
     return (
         <div className={styles.backpackContainer}>
             <div
                 className={styles.backpackHeader}
-                onClick={e => {
-                    handleClick(e);
-                    if (onToggle) onToggle();
-                }}
+                onClick={handleHeaderClick}
             >
                 {onToggle ? (
                     <FormattedMessage
@@ -107,17 +171,26 @@ const Backpack = ({
                     className={styles.closeButton}
                     onClick={handleClosePanel}
                 >
-                    <span>離開</span>
+                    <span>{'離開'}</span>
                 </button>
                 
                 <button
                     className={styles.submitButton}
-                    onClick={() => {
-                        console.log('提交');
-                    }}
+                    onClick={handleSubmit}
+                    disabled={isUploading}
                 >
-                    送出
+                    <span>
+                        {isUploading ? `上傳中 ${uploadProgress}%` : '送出'}
+                    </span>
                 </button>
+                {isUploading && (
+                    <div className={styles.progressBar}>
+                        <div 
+                            className={styles.progressFill}
+                            style={{width: `${uploadProgress}%`}}
+                        />
+                    </div>
+                )}
             </div>
             
             {expanded ? (
@@ -129,7 +202,7 @@ const Backpack = ({
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                 >
-                    {error ? (
+                    {propsError ? (
                         <div className={styles.statusMessage}>
                             <FormattedMessage
                                 defaultMessage="Error loading backpack"
@@ -213,7 +286,10 @@ Backpack.propTypes = {
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onToggle: PropTypes.func,
-    showMore: PropTypes.bool
+    showMore: PropTypes.bool,
+    vm: PropTypes.shape({
+        saveProjectSb3: PropTypes.func
+    })
 };
 
 Backpack.defaultProps = {
@@ -224,7 +300,8 @@ Backpack.defaultProps = {
     loading: false,
     showMore: false,
     onMore: null,
-    onToggle: null
+    onToggle: null,
+    vm: null
 };
 
 export default injectIntl(Backpack);
