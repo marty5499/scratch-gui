@@ -29,8 +29,11 @@ const convertConfigToCategoriesXML = (blockConfigData, colors) => {
         }
 
         const categoryId = category.id;
-        const categoryName = category.name || categoryId; // 使用 id 作為後備名稱
-        const categoryColors = colors[categoryId] || colors.extension;
+        const categoryName = category.name || categoryId;
+        
+        // 使用類別自己的顏色設定，如果沒有才使用主題顏色
+        const primaryColor = category.primary || (colors[categoryId] && colors[categoryId].primary) || colors.extension.primary;
+        const secondaryColor = category.secondary || (colors[categoryId] && colors[categoryId].secondary) || colors.extension.tertiary;
         
         // 防護：確保 blocks 陣列存在
         const blocks = category.blocks || [];
@@ -75,8 +78,8 @@ const convertConfigToCategoriesXML = (blockConfigData, colors) => {
                 <category
                     name="${xmlEscape(categoryName)}"
                     id="${xmlEscape(categoryId)}"
-                    colour="${categoryColors.primary}"
-                    secondaryColour="${categoryColors.tertiary}"
+                    colour="${primaryColor}"
+                    secondaryColour="${secondaryColor}"
                 >
             ${blocksXML}
         </category>
@@ -113,6 +116,7 @@ const makeToolboxXML = function (
     try {
         // 確保至少有一個有效的類別
         if (!customBlocksXML || !Array.isArray(customBlocksXML.categories)) {
+            console.warn('無效的積木配置:', customBlocksXML);
             return '<xml style="display: none"><category name="Loading..." id="loading"></category></xml>';
         }
 
@@ -121,6 +125,7 @@ const makeToolboxXML = function (
         
         // 檢查是否有有效的類別
         if (!customCategories || customCategories.length === 0) {
+            console.warn('沒有有效的類別配置');
             return '<xml style="display: none"><category name="Error" id="error"></category></xml>';
         }
 
@@ -128,14 +133,16 @@ const makeToolboxXML = function (
         const everything = ['<xml style="display: none">'];
         
         customCategories.forEach(category => {
-            if (category && category.xml) {
-                everything.push(categorySeparator);
-                everything.push(category.xml);
+            if (!category || !category.xml) {
+                console.warn('跳過無效的類別:', category);
+                return;
             }
+            everything.push(categorySeparator);
+            everything.push(category.xml);
         });
 
-    everything.push('</xml>');
-    return everything.join('\n');
+        everything.push('</xml>');
+        return everything.join('\n');
     } catch (error) {
         console.error('轉換自定義積木配置失敗:', error);
         return '<xml style="display: none"><category name="Error" id="error"></category></xml>';

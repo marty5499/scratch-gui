@@ -172,6 +172,13 @@ class Blocks extends React.Component {
         } catch (error) {
             console.error('載入積木配置失敗:', error);
         }
+
+        // 確保在創建積木之前先創建變數
+        const workspace = this.workspace;
+        if (workspace) {
+            // 創建默認變數
+            workspace.createVariable('myVariable', '', 'defaultVar');
+        }
     }
     shouldComponentUpdate (nextProps, nextState) {
         return (

@@ -1,157 +1,825 @@
 {
-  "categories": [
-    {
-      "id": "motion",
-      "name": "Motion",
-      "blocks": [
-        {
-          "type": "motion_movesteps",
-          "values": {
-            "STEPS": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "10" }
+    "categories": [
+      {
+        "id": "motion",
+        "name": "Motion",
+        "primary": "#4C97FF",
+        "secondary": "#3373CC",
+        "blocks": [
+          {
+            "type": "motion_movesteps",
+            "values": {
+              "STEPS": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
             }
-          }
-        },
-        {
-          "type": "motion_turnright",
-          "values": {
-            "DEGREES": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "15" }
+          },
+          {
+            "type": "motion_turnright",
+            "values": {
+              "DEGREES": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "15" }
+              }
             }
-          }
-        },
-        {
-          "type": "motion_turnleft",
-          "values": {
-            "DEGREES": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "15" }
+          },
+          {
+            "type": "motion_turnleft",
+            "values": {
+              "DEGREES": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "15" }
+              }
             }
+          },
+          {
+            "type": "motion_goto",
+            "fields": {
+              "TO": "mouse-pointer"
+            }
+          },
+          {
+            "type": "motion_gotoxy",
+            "values": {
+              "X": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              },
+              "Y": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "motion_glideto",
+            "values": {
+              "SECS": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "TO": {
+                "type": "motion_goto_menu",
+                "fields": {
+                  "TO": "mouse-pointer"
+                }
+              }
+            }
+          },
+          {
+            "type": "motion_glidesecstoxy",
+            "values": {
+              "SECS": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "X": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              },
+              "Y": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "motion_pointindirection",
+            "values": {
+              "DIRECTION": {
+                "type": "math_angle",
+                "field": { "name": "NUM", "value": "90" }
+              }
+            }
+          },
+          {
+            "type": "motion_pointtowards",
+            "fields": {
+              "TOWARDS": "mouse-pointer"
+            }
+          },
+          {
+            "type": "motion_changexby",
+            "values": {
+              "DX": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "motion_setx",
+            "values": {
+              "X": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "motion_changeyby",
+            "values": {
+              "DY": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "motion_sety",
+            "values": {
+              "Y": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "motion_ifonedgebounce"
+          },
+          {
+            "type": "motion_setrotationstyle",
+            "fields": {
+              "STYLE": "left-right"
+            }
+          },
+          {
+            "type": "motion_xposition"
+          },
+          {
+            "type": "motion_yposition"
+          },
+          {
+            "type": "motion_direction"
           }
-        },
-        {
-          "type": "motion_goto",
-          "fields": {
-            "TO": "mouse-pointer"
-          }
-        },
-        {
-          "type": "motion_gotoxy",
-          "values": {
-            "X": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
+        ]
+      },
+      {
+        "id": "looks",
+        "name": "Looks",
+        "primary": "#9966FF",
+        "secondary": "#774DCB",
+        "blocks": [
+          {
+            "type": "looks_sayforsecs",
+            "values": {
+              "MESSAGE": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hello!" }
+              },
+              "SECS": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "2" }
+              }
+            }
+          },
+          {
+            "type": "looks_say",
+            "values": {
+              "MESSAGE": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hello!" }
+              }
+            }
+          },
+          {
+            "type": "looks_thinkforsecs",
+            "values": {
+              "MESSAGE": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hmm..." }
+              },
+              "SECS": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "2" }
+              }
+            }
+          },
+          {
+            "type": "looks_think",
+            "values": {
+              "MESSAGE": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hmm..." }
+              }
+            }
+          },
+          {
+            "type": "looks_show"
+          },
+          {
+            "type": "looks_hide"
+          },
+          {
+            "type": "looks_switchcostumeto"
+          },
+          {
+            "type": "looks_nextcostume"
+          },
+          {
+            "type": "looks_switchbackdropto"
+          },
+          {
+            "type": "looks_nextbackdrop"
+          },
+          {
+            "type": "looks_changesizeby",
+            "values": {
+              "CHANGE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "looks_setsizeto",
+            "values": {
+              "SIZE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "100" }
+              }
+            }
+          },
+          {
+            "type": "looks_changeeffectby",
+            "fields": {
+              "EFFECT": "COLOR"
             },
-            "Y": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
+            "values": {
+              "CHANGE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "25" }
+              }
             }
-          }
-        },
-        {
-          "type": "motion_glideto",
-          "values": {
-            "SECS": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "1" }
+          },
+          {
+            "type": "looks_seteffectto",
+            "fields": {
+              "EFFECT": "COLOR"
             },
-            "TO": {
-              "type": "motion_goto_menu",
-              "fields": {
-                "TO": "mouse-pointer"
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "looks_cleargraphiceffects"
+          },
+          {
+            "type": "looks_goforwardbackwardlayers",
+            "fields": {
+              "FORWARD_BACKWARD": "forward"
+            },
+            "values": {
+              "NUM": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              }
+            }
+          },
+          {
+            "type": "looks_costumenumbername"
+          },
+          {
+            "type": "looks_backdropnumbername"
+          },
+          {
+            "type": "looks_size"
+          }
+        ]
+      },
+      {
+        "id": "sound",
+        "name": "Sound",
+        "primary": "#CF63CF",
+        "secondary": "#C94FC9",
+        "blocks": [
+          {
+            "type": "sound_playuntildone"
+          },
+          {
+            "type": "sound_play"
+          },
+          {
+            "type": "sound_stopallsounds"
+          },
+          {
+            "type": "sound_changeeffectby",
+            "fields": {
+              "EFFECT": "PITCH"
+            },
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "sound_seteffectto",
+            "fields": {
+              "EFFECT": "PITCH"
+            },
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "100" }
+              }
+            }
+          },
+          {
+            "type": "sound_cleareffects"
+          },
+          {
+            "type": "sound_changevolumeby",
+            "values": {
+              "VOLUME": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "sound_setvolumeto",
+            "values": {
+              "VOLUME": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "100" }
+              }
+            }
+          },
+          {
+            "type": "sound_volume"
+          }
+        ]
+      },
+      {
+        "id": "events",
+        "name": "Events",
+        "primary": "#FFD500",
+        "secondary": "#CC9900",
+        "blocks": [
+          {
+            "type": "event_whenflagclicked"
+          },
+          {
+            "type": "event_whenkeypressed",
+            "fields": {
+              "KEY_OPTION": "space"
+            }
+          },
+          {
+            "type": "event_whenthisspriteclicked"
+          },
+          {
+            "type": "event_whenstageclicked"
+          },
+          {
+            "type": "event_whenbackdropswitchesto"
+          },
+          {
+            "type": "event_whengreaterthan",
+            "fields": {
+              "WHENGREATERTHANMENU": "LOUDNESS"
+            },
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "event_broadcast"
+          },
+          {
+            "type": "event_broadcastandwait"
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "name": "Control",
+        "primary": "#FFAB19",
+        "secondary": "#CF8B17",
+        "blocks": [
+          {
+            "type": "control_wait",
+            "values": {
+              "DURATION": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              }
+            }
+          },
+          {
+            "type": "control_repeat",
+            "values": {
+              "TIMES": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "control_forever"
+          },
+          {
+            "type": "control_if"
+          },
+          {
+            "type": "control_if_else"
+          },
+          {
+            "type": "control_wait_until"
+          },
+          {
+            "type": "control_repeat_until"
+          },
+          {
+            "type": "control_stop",
+            "fields": {
+              "STOP_OPTION": "all"
+            }
+          },
+          {
+            "type": "control_start_as_clone"
+          },
+          {
+            "type": "control_create_clone_of"
+          },
+          {
+            "type": "control_delete_this_clone"
+          }
+        ]
+      },
+      {
+        "id": "sensing",
+        "name": "Sensing",
+        "primary": "#5CB1D6",
+        "secondary": "#2E8EB8",
+        "blocks": [
+          {
+            "type": "sensing_touchingobject"
+          },
+          {
+            "type": "sensing_touchingcolor"
+          },
+          {
+            "type": "sensing_coloristouchingcolor"
+          },
+          {
+            "type": "sensing_distanceto"
+          },
+          {
+            "type": "sensing_askandwait"
+          },
+          {
+            "type": "sensing_answer"
+          },
+          {
+            "type": "sensing_keypressed",
+            "fields": {
+              "KEY_OPTION": "space"
+            }
+          },
+          {
+            "type": "sensing_mousedown"
+          },
+          {
+            "type": "sensing_mousex"
+          },
+          {
+            "type": "sensing_mousey"
+          },
+          {
+            "type": "sensing_setdragmode",
+            "fields": {
+              "DRAG_MODE": "draggable"
+            }
+          },
+          {
+            "type": "sensing_loudness"
+          },
+          {
+            "type": "sensing_timer"
+          },
+          {
+            "type": "sensing_resettimer"
+          },
+          {
+            "type": "sensing_of"
+          },
+          {
+            "type": "sensing_current",
+            "fields": {
+              "CURRENTMENU": "YEAR"
+            }
+          },
+          {
+            "type": "sensing_dayssince2000"
+          },
+          {
+            "type": "sensing_username"
+          }
+        ]
+      },
+      {
+        "id": "operators",
+        "name": "Operators",
+        "primary": "#59C059",
+        "secondary": "#389438",
+        "blocks": [
+          {
+            "type": "operator_add",
+            "values": {
+              "NUM1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "NUM2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              }
+            }
+          },
+          {
+            "type": "operator_subtract",
+            "values": {
+              "NUM1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "NUM2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              }
+            }
+          },
+          {
+            "type": "operator_multiply",
+            "values": {
+              "NUM1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "2" }
+              },
+              "NUM2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "3" }
+              }
+            }
+          },
+          {
+            "type": "operator_divide",
+            "values": {
+              "NUM1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              },
+              "NUM2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "2" }
+              }
+            }
+          },
+          {
+            "type": "operator_random",
+            "values": {
+              "FROM": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "TO": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              }
+            }
+          },
+          {
+            "type": "operator_lt",
+            "values": {
+              "OPERAND1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "50" }
+              },
+              "OPERAND2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "100" }
+              }
+            }
+          },
+          {
+            "type": "operator_equals",
+            "values": {
+              "OPERAND1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "50" }
+              },
+              "OPERAND2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "50" }
+              }
+            }
+          },
+          {
+            "type": "operator_gt",
+            "values": {
+              "OPERAND1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "100" }
+              },
+              "OPERAND2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "50" }
+              }
+            }
+          },
+          {
+            "type": "operator_and"
+          },
+          {
+            "type": "operator_or"
+          },
+          {
+            "type": "operator_not"
+          },
+          {
+            "type": "operator_join",
+            "values": {
+              "STRING1": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hello" }
+              },
+              "STRING2": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "World" }
+              }
+            }
+          },
+          {
+            "type": "operator_letter_of",
+            "values": {
+              "LETTER": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              },
+              "STRING": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Apple" }
+              }
+            }
+          },
+          {
+            "type": "operator_length",
+            "values": {
+              "STRING": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Apple" }
+              }
+            }
+          },
+          {
+            "type": "operator_contains",
+            "values": {
+              "STRING1": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "Hello" }
+              },
+              "STRING2": {
+                "type": "text",
+                "field": { "name": "TEXT", "value": "lo" }
+              }
+            }
+          },
+          {
+            "type": "operator_mod",
+            "values": {
+              "NUM1": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "10" }
+              },
+              "NUM2": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "3" }
+              }
+            }
+          },
+          {
+            "type": "operator_round",
+            "values": {
+              "NUM": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "3.2" }
+              }
+            }
+          },
+          {
+            "type": "operator_mathop",
+            "fields": {
+              "OPERATOR": "sqrt"
+            },
+            "values": {
+              "NUM": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "9" }
               }
             }
           }
-        },
-        {
-          "type": "motion_glidesecstoxy",
-          "values": {
-            "SECS": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "1" }
+        ]
+      },
+      {
+        "id": "variables",
+        "name": "Variables",
+        "primary": "#FF8C1A",
+        "secondary": "#DB6E00",
+        "blocks": [
+          {
+            "type": "data_setvariableto",
+            "fields": {
+              "VARIABLE": {
+                "type": "variable",
+                "name": "myVariable",
+                "variableType": "",
+                "isLocal": false,
+                "id": "defaultVar"
+              }
             },
-            "X": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "0" }
+              }
+            }
+          },
+          {
+            "type": "data_changevariableby",
+            "fields": {
+              "VARIABLE": {
+                "type": "variable",
+                "name": "myVariable",
+                "variableType": "",
+                "isLocal": false,
+                "id": "defaultVar"
+              }
             },
-            "Y": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
+            "values": {
+              "VALUE": {
+                "type": "math_number",
+                "field": { "name": "NUM", "value": "1" }
+              }
+            }
+          },
+          {
+            "type": "data_showvariable",
+            "fields": {
+              "VARIABLE": {
+                "type": "variable",
+                "name": "myVariable",
+                "variableType": "",
+                "isLocal": false,
+                "id": "defaultVar"
+              }
+            }
+          },
+          {
+            "type": "data_hidevariable",
+            "fields": {
+              "VARIABLE": {
+                "type": "variable",
+                "name": "myVariable",
+                "variableType": "",
+                "isLocal": false,
+                "id": "defaultVar"
+              }
             }
           }
-        },
-        {
-          "type": "motion_pointindirection",
-          "values": {
-            "DIRECTION": {
-              "type": "math_angle",
-              "field": { "name": "NUM", "value": "90" }
-            }
+        ]
+      },
+      {
+        "id": "myBlocks",
+        "name": "My Blocks",
+        "primary": "#FF6680",
+        "secondary": "#FF4D6A",
+        "blocks": [
+          {
+            "type": "procedures_definition"
+          },
+          {
+            "type": "procedures_prototype"
+          },
+          {
+            "type": "procedures_call"
+          },
+          {
+            "type": "argument_reporter_string_number"
+          },
+          {
+            "type": "argument_reporter_boolean"
           }
-        },
-        {
-          "type": "motion_pointtowards",
-          "fields": {
-            "TOWARDS": "mouse-pointer"
-          }
-        },
-        {
-          "type": "motion_changexby",
-          "values": {
-            "DX": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "10" }
-            }
-          }
-        },
-        {
-          "type": "motion_setx",
-          "values": {
-            "X": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
-            }
-          }
-        },
-        {
-          "type": "motion_changeyby",
-          "values": {
-            "DY": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "10" }
-            }
-          }
-        },
-        {
-          "type": "motion_sety",
-          "values": {
-            "Y": {
-              "type": "math_number",
-              "field": { "name": "NUM", "value": "0" }
-            }
-          }
-        },
-        {
-          "type": "motion_ifonedgebounce"
-        },
-        {
-          "type": "motion_setrotationstyle",
-          "fields": {
-            "STYLE": "left-right"
-          }
-        },
-        {
-          "type": "motion_xposition"
-        },
-        {
-          "type": "motion_yposition"
-        },
-        {
-          "type": "motion_direction"
-        }
-      ]
-    }
-  ]
-}
+        ]
+      }
+    ]
+  }
