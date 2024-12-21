@@ -89,7 +89,7 @@ class Blocks extends React.Component {
         this.onTargetsUpdate = debounce(this.onTargetsUpdate, 100);
         this.toolboxUpdateQueue = [];
     }
-    componentDidMount () {
+    async componentDidMount () {
         this.ScratchBlocks = VMScratchBlocks(this.props.vm, this.props.useCatBlocks);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
@@ -102,7 +102,11 @@ class Blocks extends React.Component {
         const workspaceConfig = defaultsDeep({},
             Blocks.defaultOptions,
             this.props.options,
-            {rtl: this.props.isRtl, toolbox: this.props.toolboxXML, colours: getColorsForTheme(this.props.theme)}
+            {
+                rtl: this.props.isRtl,
+                toolbox: makeToolboxXML(true),
+                colours: getColorsForTheme(this.props.theme)
+            }
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
 

@@ -1,9 +1,8 @@
-import ScratchBlocks from 'scratch-blocks';
 import {defaultColors} from './themes';
+import ScratchBlocks from 'scratch-blocks';
 
 const categorySeparator = '<sep gap="36"/>';
-
-const blockSeparator = '<sep gap="36"/>'; // At default scale, about 28px
+const blockSeparator = '<sep gap="36"/>'; 
 
 /* eslint-disable no-unused-vars */
 const motion = function (isInitialSetup, isStage, targetId, colors) {
@@ -20,7 +19,7 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         <block type="motion_movesteps">
             <value name="STEPS">
                 <shadow type="math_number">
-                    <field name="NUM">10</field>
+                    <field name="NUM">123</field>
                 </shadow>
             </value>
         </block>
@@ -741,24 +740,70 @@ const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
 const xmlOpen = '<xml style="display: none">';
 const xmlClose = '</xml>';
 
+// 修改 generateBlockXML 函式
+const generateBlockXML = blockData => {
+    const {type, values} = blockData;
+    let valuesXML = '';
+    
+    if (values) {
+        valuesXML = Object.entries(values).map(([name, config]) => `
+            <value name="${name}">
+                <shadow type="${config.type}">
+                    <field name="${config.field.name}">${config.field.value}</field>
+                </shadow>
+            </value>
+        `).join('\n');
+    }
+
+    return `<block type="${type}">${valuesXML}</block>`;
+};
+
+// 修改 generateCategoryXML 函式
+const generateCategoryXML = (categoryId, categoryData, colors, isStage = false) => {
+    if (!categoryData) return '';
+    
+    if (isStage && categoryId === 'motion') {
+        const stageSelected = ScratchBlocks.ScratchMsgs.translate(
+            'MOTION_STAGE_SELECTED',
+            'Stage selected: no motion blocks'
+        );
+        return `
+            <category name="%{BKY_CATEGORY_${categoryData.name}}" id="${categoryId}" 
+                colour="${colors.primary}" secondaryColour="${colors.tertiary}">
+                <label text="${stageSelected}"></label>
+            </category>
+        `;
+    }
+
+    const blocksXML = categoryData.blocks
+        ? categoryData.blocks
+            .map(block => generateBlockXML(block))
+            .join('\n')
+        : '';
+
+    return `
+        <category name="%{BKY_CATEGORY_${categoryData.name}}" id="${categoryId}"
+            colour="${colors.primary}" secondaryColour="${colors.tertiary}">
+            ${blocksXML}
+            ${blockSeparator}
+        </category>
+    `;
+};
+
 /**
- * @param {!boolean} isInitialSetup - Whether the toolbox is for initial setup. If the mode is "initial setup",
- * blocks with localized default parameters (e.g. ask and wait) should not be loaded. (LLK/scratch-gui#5445)
- * @param {?boolean} isStage - Whether the toolbox is for a stage-type target. This is always set to true
- * when isInitialSetup is true.
+ * @param {!boolean} isInitialSetup - Whether the toolbox is for initial setup.
+ * @param {?boolean} isStage - Whether the toolbox is for a stage-type target.
  * @param {?string} targetId - The current editing target
- * @param {?Array.<object>} categoriesXML - optional array of `{id,xml}` for categories. This can include both core
- * and other extensions: core extensions will be placed in the normal Scratch order; others will go at the bottom.
- * @property {string} id - the extension / category ID.
- * @property {string} xml - the `<category>...</category>` XML for this extension / category.
+ * @param {?Array.<object>} categoriesXML - optional array of `{id,xml}` for categories.
  * @param {?string} costumeName - The name of the default selected costume dropdown.
  * @param {?string} backdropName - The name of the default selected backdrop dropdown.
  * @param {?string} soundName -  The name of the default selected sound dropdown.
  * @param {?object} colors - The colors for the theme.
  * @returns {string} - a ScratchBlocks-style XML document for the contents of the toolbox.
  */
-const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categoriesXML = [],
-    costumeName = '', backdropName = '', soundName = '', colors = defaultColors) {
+const makeToolboxXML = function (isInitialSetup, isStage = true, targetId,
+    categoriesXML = [], costumeName = '', backdropName = '', soundName = '', colors = defaultColors) {
+    
     isStage = isInitialSetup || isStage;
     const gap = [categorySeparator];
 
@@ -770,25 +815,27 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const moveCategory = categoryId => {
         const index = categoriesXML.findIndex(categoryInfo => categoryInfo.id === categoryId);
         if (index >= 0) {
-            // remove the category from categoriesXML and return its XML
             const [categoryInfo] = categoriesXML.splice(index, 1);
             return categoryInfo.xml;
         }
-        // return `undefined`
     };
+
+    // 使用原有的函式產生 XML
     const motionXML = moveCategory('motion') || motion(isInitialSetup, isStage, targetId, colors.motion);
-    const looksXML = moveCategory('looks') ||
+    const looksXML = moveCategory('looks') || 
         looks(isInitialSetup, isStage, targetId, costumeName, backdropName, colors.looks);
-    const soundXML = moveCategory('sound') || sound(isInitialSetup, isStage, targetId, soundName, colors.sounds);
+    const soundXML = moveCategory('sound') || 
+        sound(isInitialSetup, isStage, targetId, soundName, colors.sounds);
     const eventsXML = moveCategory('event') || events(isInitialSetup, isStage, targetId, colors.event);
     const controlXML = moveCategory('control') || control(isInitialSetup, isStage, targetId, colors.control);
     const sensingXML = moveCategory('sensing') || sensing(isInitialSetup, isStage, targetId, colors.sensing);
-    const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
+    const operatorsXML = moveCategory('operators') || 
+        operators(isInitialSetup, isStage, targetId, colors.operators);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
 
     const everything = [
-        xmlOpen,
+        '<xml style="display: none">',
         motionXML, gap,
         looksXML, gap,
         soundXML, gap,
@@ -804,7 +851,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         everything.push(gap, extensionCategory.xml);
     }
 
-    everything.push(xmlClose);
+    everything.push('</xml>');
     return everything.join('\n');
 };
 
