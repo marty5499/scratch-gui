@@ -154,7 +154,7 @@ class Blocks extends React.Component {
 
         // 載入自定義積木配置
         try {
-            const config = await loadBlocksConfig('/static/blocks/blockConfig.json');
+            const config = await loadBlocksConfig('/static/blocks/1-1.json');
             if (this.workspace && config) {
                 // 先設定狀態
                 await new Promise(resolve => {

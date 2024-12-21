@@ -1,0 +1,5 @@
+{
+  "gui.menuBar.validate": "驗證",
+  "gui.menuBar.validate.tooltip": "檢查程式積木是否正確",
+  "gui.backpack.header.tooltip": "背包工具列"
+} 
