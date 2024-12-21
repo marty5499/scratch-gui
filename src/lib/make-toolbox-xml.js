@@ -22,7 +22,6 @@ const convertConfigToCategoriesXML = (blockConfigData, colors) => {
     }
     
     return blockConfigData.categories.map(category => {
-        // 防護：確保 category 物件存在且具有必要屬性
         if (!category || !category.id) {
             console.warn('發現無效的類別配置');
             return null;
@@ -31,15 +30,15 @@ const convertConfigToCategoriesXML = (blockConfigData, colors) => {
         const categoryId = category.id;
         const categoryName = category.name || categoryId;
         
-        // 使用類別自己的顏色設定，如果沒有才使用主題顏色
         const primaryColor = category.primary || (colors[categoryId] && colors[categoryId].primary) || colors.extension.primary;
         const secondaryColor = category.secondary || (colors[categoryId] && colors[categoryId].secondary) || colors.extension.tertiary;
         
-        // 防護：確保 blocks 陣列存在
         const blocks = category.blocks || [];
         
         const blocksXML = blocks.map(block => {
             if (!block || !block.type) return '';
+            
+            const blockMessage = block.message || block.type;
             
             // 處理積木的值
             let valuesXML = '';

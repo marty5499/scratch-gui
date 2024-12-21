@@ -154,14 +154,15 @@ class Blocks extends React.Component {
 
         // 載入自定義積木配置
         try {
-            const config = await loadBlocksConfig('/static/blocks/1-1.json');
+            const config = await loadBlocksConfig(
+                '/static/blocks/1-1.json',
+                this.props.locale
+            );
             if (this.workspace && config) {
-                // 先設定狀態
                 await new Promise(resolve => {
                     this.setState({ customBlocksConfig: config }, resolve);
                 });
                 
-                // 確保 workspace 已經準備好
                 if (this.workspace.toolbox_) {
                     const toolboxXML = this.getToolboxXML();
                     if (toolboxXML) {

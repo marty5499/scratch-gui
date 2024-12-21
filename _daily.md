@@ -1,5 +1,10 @@
-12/20
+12/21
 - 增加自定義積木從 blockConfig.json 載入 /static/blocks/blockConfig.json
+- 切換語系
+   http://localhost:8602/index.html?locale=zh-tw
+
+- 
+  
 
 
 
