@@ -9,6 +9,7 @@ import {STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
 import {getEventXY} from '../lib/touch-utils';
 import VideoProvider from '../lib/video/video-provider';
 import {BitmapAdapter as V2BitmapAdapter} from 'scratch-svg-renderer';
+import {loadBlocksConfig} from '../lib/blocks-config';
 
 import StageComponent from '../components/stage/stage.jsx';
 

@@ -35,6 +35,8 @@ import {
     SOUNDS_TAB_INDEX
 } from '../reducers/editor-tab';
 
+import {loadBlocksConfig} from '../lib/blocks-config';
+
 const addFunctionListener = (object, property, callback) => {
     const oldFn = object[property];
     object[property] = function (...args) {
@@ -84,7 +86,8 @@ class Blocks extends React.Component {
         this.ScratchBlocks.recordSoundCallback = this.handleOpenSoundRecorder;
 
         this.state = {
-            prompt: null
+            prompt: null,
+            customBlocksConfig: null
         };
         this.onTargetsUpdate = debounce(this.onTargetsUpdate, 100);
         this.toolboxUpdateQueue = [];
@@ -104,7 +107,7 @@ class Blocks extends React.Component {
             this.props.options,
             {
                 rtl: this.props.isRtl,
-                toolbox: makeToolboxXML(true),
+                toolbox: '<xml style="display: none"><category name="Loading..." id="loading"></category></xml>',
                 colours: getColorsForTheme(this.props.theme)
             }
         );
@@ -147,6 +150,27 @@ class Blocks extends React.Component {
         // If locale changes while not visible it will get handled in didUpdate
         if (this.props.isVisible) {
             this.setLocale();
+        }
+
+        // 載入自定義積木配置
+        try {
+            const config = await loadBlocksConfig('/static/blocks/blockConfig.json');
+            if (this.workspace && config) {
+                // 先設定狀態
+                await new Promise(resolve => {
+                    this.setState({ customBlocksConfig: config }, resolve);
+                });
+                
+                // 確保 workspace 已經準備好
+                if (this.workspace.toolbox_) {
+                    const toolboxXML = this.getToolboxXML();
+                    if (toolboxXML) {
+                        this.workspace.updateToolbox(toolboxXML);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('載入積木配置失敗:', error);
         }
     }
     shouldComponentUpdate (nextProps, nextState) {
@@ -348,28 +372,29 @@ class Blocks extends React.Component {
         this.workspace.reportValue(data.id, data.value);
     }
     getToolboxXML () {
-        // Use try/catch because this requires digging pretty deep into the VM
-        // Code inside intentionally ignores several error situations (no stage, etc.)
-        // Because they would get caught by this try/catch
         try {
-            let {editingTarget: target, runtime} = this.props.vm;
-            const stage = runtime.getTargetForStage();
-            if (!target) target = stage; // If no editingTarget, use the stage
+            const {vm} = this.props;
+            const target = vm.editingTarget || vm.runtime.getTargetForStage();
+            if (!target) return null;
 
-            const stageCostumes = stage.getCostumes();
-            const targetCostumes = target.getCostumes();
-            const targetSounds = target.getSounds();
-            const dynamicBlocksXML = injectExtensionCategoryTheme(
-                this.props.vm.runtime.getBlocksXML(target),
-                this.props.theme
+            // 確保有自定義配置
+            if (!this.state.customBlocksConfig) {
+                return '<xml style="display: none"><category name="Loading..." id="loading"></category></xml>';
+            }
+
+            return makeToolboxXML(
+                false,
+                target.isStage,
+                target.id,
+                [], // 不傳入預設積木
+                '', // costumeName
+                '', // backdropName
+                '', // soundName
+                this.props.theme ? getColorsForTheme(this.props.theme) : null,
+                this.state.customBlocksConfig
             );
-            return makeToolboxXML(false, target.isStage, target.id, dynamicBlocksXML,
-                targetCostumes[targetCostumes.length - 1].name,
-                stageCostumes[stageCostumes.length - 1].name,
-                targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : '',
-                getColorsForTheme(this.props.theme)
-            );
-        } catch {
+        } catch (error) {
+            console.error('生成工具箱 XML 失敗:', error);
             return null;
         }
     }

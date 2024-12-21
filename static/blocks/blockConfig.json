@@ -1,0 +1,157 @@
+{
+  "categories": [
+    {
+      "id": "motion",
+      "name": "Motion",
+      "blocks": [
+        {
+          "type": "motion_movesteps",
+          "values": {
+            "STEPS": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "10" }
+            }
+          }
+        },
+        {
+          "type": "motion_turnright",
+          "values": {
+            "DEGREES": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "15" }
+            }
+          }
+        },
+        {
+          "type": "motion_turnleft",
+          "values": {
+            "DEGREES": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "15" }
+            }
+          }
+        },
+        {
+          "type": "motion_goto",
+          "fields": {
+            "TO": "mouse-pointer"
+          }
+        },
+        {
+          "type": "motion_gotoxy",
+          "values": {
+            "X": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            },
+            "Y": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            }
+          }
+        },
+        {
+          "type": "motion_glideto",
+          "values": {
+            "SECS": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "1" }
+            },
+            "TO": {
+              "type": "motion_goto_menu",
+              "fields": {
+                "TO": "mouse-pointer"
+              }
+            }
+          }
+        },
+        {
+          "type": "motion_glidesecstoxy",
+          "values": {
+            "SECS": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "1" }
+            },
+            "X": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            },
+            "Y": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            }
+          }
+        },
+        {
+          "type": "motion_pointindirection",
+          "values": {
+            "DIRECTION": {
+              "type": "math_angle",
+              "field": { "name": "NUM", "value": "90" }
+            }
+          }
+        },
+        {
+          "type": "motion_pointtowards",
+          "fields": {
+            "TOWARDS": "mouse-pointer"
+          }
+        },
+        {
+          "type": "motion_changexby",
+          "values": {
+            "DX": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "10" }
+            }
+          }
+        },
+        {
+          "type": "motion_setx",
+          "values": {
+            "X": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            }
+          }
+        },
+        {
+          "type": "motion_changeyby",
+          "values": {
+            "DY": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "10" }
+            }
+          }
+        },
+        {
+          "type": "motion_sety",
+          "values": {
+            "Y": {
+              "type": "math_number",
+              "field": { "name": "NUM", "value": "0" }
+            }
+          }
+        },
+        {
+          "type": "motion_ifonedgebounce"
+        },
+        {
+          "type": "motion_setrotationstyle",
+          "fields": {
+            "STYLE": "left-right"
+          }
+        },
+        {
+          "type": "motion_xposition"
+        },
+        {
+          "type": "motion_yposition"
+        },
+        {
+          "type": "motion_direction"
+        }
+      ]
+    }
+  ]
+}
