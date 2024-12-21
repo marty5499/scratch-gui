@@ -15,9 +15,9 @@ const ScratchWebpackConfigBuilder = require("scratch-webpack-configuration");
 // const STATIC_PATH = process.env.STATIC_PATH || '/static';
 
 const baseConfig = new ScratchWebpackConfigBuilder({
-    rootPath: path.resolve(__dirname),
-    enableReact: true,
-})
+        rootPath: path.resolve(__dirname),
+        enableReact: true,
+    })
     .setTarget("browserslist")
     .merge({
         output: {
@@ -29,10 +29,13 @@ const baseConfig = new ScratchWebpackConfigBuilder({
         },
         devServer: {
             allowedHosts: ["scratch.nodered.vip"],
-            static: {
+            static: [{
                 directory: path.join(__dirname, 'static'),
                 publicPath: '/static/'
-            }
+            }, {
+                directory: path.join(__dirname, 'public'),
+                publicPath: '/'
+            }]
         },
         resolve: {
             fallback: {
@@ -50,8 +53,7 @@ const baseConfig = new ScratchWebpackConfigBuilder({
     })
     .addModuleRule({
         test: /\.css$/,
-        use: [
-            {
+        use: [{
                 loader: "style-loader",
             },
             {
@@ -94,15 +96,13 @@ const baseConfig = new ScratchWebpackConfigBuilder({
             "process.env.DEBUG": Boolean(process.env.DEBUG),
             "process.env.GA_ID": `"${process.env.GA_ID || "UA-000000-01"}"`,
             "process.env.GTM_ENV_AUTH": `"${process.env.GTM_ENV_AUTH || ""}"`,
-            "process.env.GTM_ID": process.env.GTM_ID
-                ? `"${process.env.GTM_ID}"`
-                : null,
+            "process.env.GTM_ID": process.env.GTM_ID ?
+                `"${process.env.GTM_ID}"` : null,
         })
     )
     .addPlugin(
         new CopyWebpackPlugin({
-            patterns: [
-                {
+            patterns: [{
                     from: "node_modules/scratch-blocks/media",
                     to: "static/blocks-media/default",
                 },
@@ -188,8 +188,7 @@ const buildConfig = baseConfig
     )
     .addPlugin(
         new CopyWebpackPlugin({
-            patterns: [
-                {
+            patterns: [{
                     from: "static",
                     to: "static",
                 },
@@ -209,6 +208,5 @@ const buildConfig = baseConfig
 const buildDist =
     process.env.NODE_ENV === "production" || process.env.BUILD_MODE === "dist";
 
-module.exports = buildDist
-    ? [buildConfig.get(), distConfig.get()]
-    : buildConfig.get();
+module.exports = buildDist ? [buildConfig.get(), distConfig.get()] :
+    buildConfig.get();
