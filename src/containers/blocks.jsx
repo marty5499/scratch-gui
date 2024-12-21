@@ -37,6 +37,11 @@ import {
 
 import {loadBlocksConfig} from '../lib/blocks-config';
 
+const getStageParam = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('stage') || 'default';
+};
+
 const addFunctionListener = (object, property, callback) => {
     const oldFn = object[property];
     object[property] = function (...args) {
@@ -154,13 +159,16 @@ class Blocks extends React.Component {
 
         // 載入自定義積木配置
         try {
+            // 根據 stage=參數 載入對應的積木配置 , 如果沒有 stage 參數就載入 default 的積木配置
+            // default 的積木配置是 public/stage/blockConfig.json
+            const stageParam = getStageParam();
             const config = await loadBlocksConfig(
-                '/static/blocks/1-1.json',
+                `/stage/${stageParam}_blocks.json`,
                 this.props.locale
             );
             if (this.workspace && config) {
                 await new Promise(resolve => {
-                    this.setState({ customBlocksConfig: config }, resolve);
+                    this.setState({customBlocksConfig: config}, resolve);
                 });
                 
                 if (this.workspace.toolbox_) {

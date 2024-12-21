@@ -36,7 +36,7 @@ const loadBlocksConfig = async (configUrl, locale = 'en') => {
     const config = await response.json();
     
     // 載入對應語系的訊息檔
-    const messagesResponse = await fetch(`/static/blocks/messages/${locale}.json`);
+    const messagesResponse = await fetch(`/stage/messages/${locale}.json`);
     const messages = messagesResponse.ok ? await messagesResponse.json() : {};
 
     // 處理多語系名稱

@@ -76,6 +76,30 @@ class Stage extends React.Component {
         this.attachMouseEvents(this.canvas);
         this.updateRect();
         this.props.vm.runtime.addListener('QUESTION', this.questionListener);
+
+        // Get stageId from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const stageId = urlParams.get('stage');
+        
+        // Only fetch if stageId exists in URL
+        if (stageId) {
+            fetch(`/stage/${stageId}.sb3`, {
+                headers: {
+                    Accept: 'application/octet-stream'  // Remove quotes as per linter
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Stage file not found');
+                    }
+                    return response.arrayBuffer();
+                })
+                // Simplify arrow function as per linter
+                .then(buffer => this.props.vm.loadProject(new Uint8Array(buffer)))
+                .catch(error => {
+                    console.error('Error loading stage:', error);
+                });
+        }
     }
     shouldComponentUpdate (nextProps, nextState) {
         return this.props.stageSize !== nextProps.stageSize ||

@@ -2,8 +2,41 @@
 - 增加自定義積木從 blockConfig.json 載入 /static/blocks/blockConfig.json
 - 切換語系
    http://localhost:8602/index.html?locale=zh-tw
+stage.jsx:  吃 url 參數 stage 載入指定關卡 , 沒有就不載入
+blocks.jsx: 吃 url 參數 stage 載入指定關卡 , 沒有就載入預設積木組
+blocks-config.js: 改完動態載入積木組
+1-2_blocks.json: 關卡積木
+default_blocks.json: 預設積木組
 
-- 
+- 這組積木有問題
+```json
+
+        {
+          "type": "sensing_of",
+          "values": {
+            "PROPERTY": {
+              "type": "field_dropdown",
+              "name": "PROPERTY",
+              "options": [
+                ["x position","x position"],
+                ["y position","y position"],
+                ["direction","direction"],
+                ["size","size"],
+                ["volume","volume"],
+                ["backdrop #","backdrop #"]
+              ]
+            },
+            "OBJECT": {
+              "type": "field_dropdown",
+              "name": "OBJECT",
+              "options": [
+                ["Stage", "_stage_"],
+                ["Sprite1", "Sprite1"]
+              ]
+            }
+          }
+        },
+```
   
 
 
